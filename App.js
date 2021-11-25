@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { NavigationContainer, DrawerActions } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+
 import * as SecureStore from 'expo-secure-store';
-import SignInScreen from './screens/SignInScreen';
-import HomeScreen from './screens/HomeScreen';
-import DetailsScreen from './screens/DetailsScreen';
-import CustomScreen from './screens/CustomScreen';
+
+
 import AppLoading from './screens/SplashScreen';
 import AuthReducer from './contexts/Auth/AuthReducer';
 import AuthContext from './contexts/Auth/AuthContext';
 import { login } from './services/api';
+import AppDrawer from './components/navigations/AppDrawer';
+import LoginStack from './components/navigations/LoginStack';
 
-const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+
 
 const MARCADOR_KEY_STORAGE = "MARCADOR_KEY_STORAGE"
 
@@ -34,8 +32,7 @@ function App() {
       let userToken = null;
       let dispatchType = '';
       try {
-        userToken = await SecureStore.getItemAsync(MARCADOR_KEY_STORAGE);
-        console.log(userToken);
+        userToken = await SecureStore.getItemAsync(MARCADOR_KEY_STORAGE);       
         if (!userToken) {
           console.log("usuario no existe");
           dispatchType = 'SIGN_IN';
@@ -52,7 +49,7 @@ function App() {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: dispatchType, token: userToken });
+      dispatch({ type: dispatchType, token: JSON.parse(userToken) });
     };
 
     bootstrapAsync();
@@ -97,41 +94,18 @@ function App() {
     []
   );
 
-  const StackNavStyle = {
-    headerStyle: {
-      backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-    headerTitleAlign: 'center'
-  }
-  console.log("en app")
-  console.log(state.userToken);
-
   if (state.isLoading) {
     return <AppLoading />;
   }
 
-  const opt =  {
-    headerShown: false,
-  }
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-
         {state.userToken == null ? (
-          <Stack.Navigator >
-            <Stack.Screen options={opt} name="SignIn" component={SignInScreen} />
-          </Stack.Navigator>
+          <LoginStack />
         ) : (
-          <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" component={HomeScreen} />
-            <Drawer.Screen name="Details" component={DetailsScreen} />
-            <Drawer.Screen name="Custom" component={CustomScreen} />
-          </Drawer.Navigator>
+          <AppDrawer token={state.userToken}/>
         )}
       </NavigationContainer>
     </AuthContext.Provider>

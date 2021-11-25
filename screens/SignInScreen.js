@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TextInput, View, Button, StyleSheet, Text, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AuthContext from '../contexts/Auth/AuthContext';
+import * as Font from 'expo-font'
 
 function SignInScreen({ route, navigation }) {
   const LOGO = '../assets/loginIcon.png'
+
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const { signIn } = React.useContext(AuthContext);
+  
+  const [fontsLoaded, setFontsLoaded] = React.useState(false);
+
+  useEffect(() =>{
+      if(!fontsLoaded){
+          loadFonts();
+      }        
+  },[])
+
+  const loadFonts = async ( ) => {
+      await Font.loadAsync({
+          'roboto-light': require('../assets/fonts/roboto/Roboto-Light.ttf'),
+          'roboto-regular': require('../assets/fonts/roboto/Roboto-Regular.ttf'),
+          'roboto-bold': require('../assets/fonts/roboto/Roboto-Bold.ttf'),
+      })
+      setFontsLoaded(true);
+  }
+
+  if(!fontsLoaded){
+      return (
+          <View />
+      );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -50,7 +76,7 @@ function SignInScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#34495e",
+    backgroundColor: "#d2dae2",
     
   },
   logoContainer: {
