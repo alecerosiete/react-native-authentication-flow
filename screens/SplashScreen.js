@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View, Text, Image } from 'react-native'
-import LogoSplashScreen from '../assets/LogoSplashScreen.gif'
+import LogoSplashScreen from '../assets/splash.png'
 const SplashScreen = () => {
 
     return (
@@ -8,10 +8,8 @@ const SplashScreen = () => {
            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100%'
             }}>
-                <Image source={LogoSplashScreen}/>
-           
+                <Image style={{width: '100%', height: '100%'}} source={LogoSplashScreen}/>
         </View>
     )
 }

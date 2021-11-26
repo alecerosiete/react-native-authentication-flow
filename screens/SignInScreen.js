@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
-import { TextInput, View, Button, StyleSheet, Text, Image } from 'react-native';
+import { TextInput, View,  StyleSheet, Text} from 'react-native';
+import { Input } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AuthContext from '../contexts/Auth/AuthContext';
 import * as Font from 'expo-font'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 function SignInScreen({ route, navigation }) {
   const LOGO = '../assets/loginIcon.png'
@@ -13,6 +16,8 @@ function SignInScreen({ route, navigation }) {
   const { signIn } = React.useContext(AuthContext);
   
   const [fontsLoaded, setFontsLoaded] = React.useState(false);
+
+  const [isSecurePassword,setIsSecurePassword] = React.useState(true);
 
   useEffect(() =>{
       if(!fontsLoaded){
@@ -35,6 +40,8 @@ function SignInScreen({ route, navigation }) {
       );
   }
 
+
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -44,28 +51,41 @@ function SignInScreen({ route, navigation }) {
       </View>
 
       <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
+        
+        <Input
+         leftIcon={<Ionicons  name="person-outline" size={24} color="#999999"/>}
           placeholder="Username"
           value={username}
           onChangeText={setUsername}
           returnKeyType="next"
-          /*onSubmitEditing={() => this.passwordInput.focus()}*/
+          autoCapitalize='none'
+          onSubmitEditing={() => this.passwordInput.focus()}
+          blurOnSubmit={false}
         />
-        <TextInput
-          style={styles.input}
+       
+        <Input
+         
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
+          secureTextEntry={isSecurePassword}
+          rightIcon={
+          <TouchableOpacity onPress={() => {setIsSecurePassword((prev) => !prev)}} >
+            <Ionicons  name={isSecurePassword ? "eye-outline" : "eye-off-outline"} size={24} color="#000000" /> 
+          </TouchableOpacity>
+          }
+          leftIcon={<Ionicons  name="lock-closed-outline" size={24} color="#999999"/>}
           returnkeytype="go"
-          /*ref={(input) => this.passwordInput }*/
+          blurOnSubmit={false}
+          ref={(input) => {this.passwordInput = input; }}
         />
+
         <TouchableOpacity style={styles.buttonContainer} title="Sign in" onPress={() => signIn({ username, password })} >
           <Text style={styles.buttonText}>ACCEDER</Text>
         </TouchableOpacity>
 
       </View>
+
       <View>
         <Text style={styles.footer}>www.relojmarcador.com</Text>
       </View>
@@ -82,20 +102,21 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     flexGrow: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingTop: 20
   },
   logo: {
     width: 100,
     height: 100,
   },
   title: {
-    color: "#fff",
-    marginTop: 10,
-    fontSize: 22,
-    width: 160,
+    color: "#e67e22",
+    marginTop: 50,
+    fontSize: 36,
+    width: '100%',
     textAlign: 'center',
     opacity: 0.9,
-
+    fontFamily: 'roboto-light'
   },
   input: {
     height: 40,
@@ -105,11 +126,14 @@ const styles = StyleSheet.create({
     fontSize:16,
     paddingHorizontal: 10,
     borderRadius:5
+
   },
   formContainer: {
-    padding: 10,
-    paddingBottom: 200,
-    paddingTop: 20,
+    padding: 30,
+    paddingBottom: 50,
+    paddingTop: 10,
+    flex: 1,
+   
   },
   buttonText: {
     textAlign: 'center',
@@ -134,7 +158,9 @@ const styles = StyleSheet.create({
   titleBold:{
     fontWeight: 'bold',
     color:'#000',
-  }
+    fontFamily: 'roboto-light'
+  },
+
 })
 
 export default SignInScreen;
