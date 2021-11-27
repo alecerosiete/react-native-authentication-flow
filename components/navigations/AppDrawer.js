@@ -60,7 +60,7 @@ const AppDrawer = (params) => {
                         fontFamily: 'roboto-bold',
                         fontSize: 15
                     },
-                    drawerActiveBackgroundColor:"#fd713b",
+                    drawerActiveBackgroundColor:"#26bdd7",
                     drawerActiveTintColor: "#ffffff"
                 }
             } >

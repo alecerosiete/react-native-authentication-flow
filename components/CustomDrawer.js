@@ -36,7 +36,7 @@ const CustomDrawer = (props) => {
     return (
       <View style={{flex:1}}>
         <DrawerContentScrollView {...props}  >
-            <ImageBackground source={require('../assets/profile-bg.png')} style={{ padding: 20 }}>
+            <ImageBackground source={require('../assets/header_image.jpg')} style={{ padding: 20 }}>
                 <Image source={{ uri: profile.avatar }} style={styles.profileImage} />
                 <Text style={styles.profileTitle}>{profile.fullname}</Text>
                 <Text style={styles.profileSubTitle}>{profile.email}</Text>

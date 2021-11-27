@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+  import React, { useEffect } from 'react';
 import { TextInput, View,  StyleSheet, Text} from 'react-native';
 import { Input } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -58,7 +58,7 @@ function SignInScreen({ route, navigation }) {
           value={username}
           onChangeText={setUsername}
           returnKeyType="next"
-          autoCapitalize='none'
+          autoCapitalize='none'                    
           onSubmitEditing={() => this.passwordInput.focus()}
           blurOnSubmit={false}
         />
@@ -76,8 +76,8 @@ function SignInScreen({ route, navigation }) {
           }
           leftIcon={<Ionicons  name="lock-closed-outline" size={24} color="#999999"/>}
           returnkeytype="go"
-          blurOnSubmit={false}
-          ref={(input) => {this.passwordInput = input; }}
+          
+          ref={(input) => {this.passwordInput = input}}
         />
 
         <TouchableOpacity style={styles.buttonContainer} title="Sign in" onPress={() => signIn({ username, password })} >
@@ -96,7 +96,7 @@ function SignInScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#d2dae2",
+    backgroundColor: "#E1E6EA",
     
   },
   logoContainer: {
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   title: {
-    color: "#e67e22",
+    color: "#1eb4cd",
     marginTop: 50,
     fontSize: 36,
     width: '100%',
@@ -140,8 +140,9 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   buttonContainer: {
-    backgroundColor:'#e67e22',
-    paddingVertical:15
+    backgroundColor:'#1eb4cd',
+    paddingVertical:15,
+    borderRadius: 5
   },
   buttonText: {
     textAlign: 'center',
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
 
   footer: {
     textAlign: 'center',
-    color:'#ffffff',
+    color:'#B3B3B9',
     fontWeight: 'bold',
     marginBottom:10,
   },
