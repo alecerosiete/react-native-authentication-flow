@@ -14,3 +14,20 @@ export const login = async (credentials) => {
     return loginResults;
 
 }
+
+export const getUser = async (userToken) => {
+    const res = await fetch(`${API}/user`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json', 'Accept': 'application/json',
+            'X-API-KEY': '7b16fbfb5cd3328df243a9a2322da9458d60d9c1'
+        },
+        body: JSON.stringify({
+            token : userToken
+        })
+    });
+
+    const user = await res.json();
+    return user;
+
+}

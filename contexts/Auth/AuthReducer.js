@@ -3,7 +3,7 @@ import { RESTORE_TOKEN, SIGN_OUT, SIGN_IN } from '../ContextTypes'
 const AuthReducer = (state, action) => {
     switch (action.type) {
         case 'RESTORE_TOKEN':
-            console.log('in auth reducer restore token')
+            console.log('in auth reducer restore token',action.tokens)
             return {
                 ...state,
                 userToken: action.token,

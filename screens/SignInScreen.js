@@ -13,7 +13,7 @@ function SignInScreen({ route, navigation }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const { signIn } = React.useContext(AuthContext);
+  const { authContext, token } = React.useContext(AuthContext);
   
   const [fontsLoaded, setFontsLoaded] = React.useState(false);
 
@@ -80,7 +80,7 @@ function SignInScreen({ route, navigation }) {
           ref={(input) => {this.passwordInput = input}}
         />
 
-        <TouchableOpacity style={styles.buttonContainer} title="Sign in" onPress={() => signIn({ username, password })} >
+        <TouchableOpacity style={styles.buttonContainer} title="Sign in" onPress={() => authContext.signIn({ username, password })} >
           <Text style={styles.buttonText}>ACCEDER</Text>
         </TouchableOpacity>
 

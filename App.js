@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-
+import React, { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
-
-
 import AppLoading from './screens/SplashScreen';
 import AuthReducer from './contexts/Auth/AuthReducer';
 import AuthContext from './contexts/Auth/AuthContext';
 import { login } from './services/api';
 import AppDrawer from './components/navigations/AppDrawer';
 import LoginStack from './components/navigations/LoginStack';
-
-
+import {NavigationContainer } from '@react-navigation/native';
 
 const MARCADOR_KEY_STORAGE = "MARCADOR_KEY_STORAGE"
 
 function App() {
+  console.log("App...")
 
   const AuthInitialState = {
     isLoading: true,
@@ -25,40 +21,44 @@ function App() {
 
   const [state, dispatch] = React.useReducer(AuthReducer, AuthInitialState);
 
-  React.useEffect(() => {
 
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      let userToken = null;
-      let dispatchType = '';
-      try {
-        userToken = await SecureStore.getItemAsync(MARCADOR_KEY_STORAGE);       
-        if (!userToken) {
-          console.log("usuario no existe");
-          dispatchType = 'SIGN_IN';
-        } else {
-          console.log("usuario logueado");
-          dispatchType = 'RESTORE_TOKEN';
+    useEffect(() => {
+
+      // Fetch the token from storage then navigate to our appropriate place
+      const bootstrapAsync = async () => {
+        let userToken = null;
+        let dispatchType = '';
+        try {
+          userToken = await SecureStore.getItemAsync(MARCADOR_KEY_STORAGE);
+          if (!userToken) {
+            console.log("usuario no existe");
+            dispatchType = 'SIGN_IN';
+          } else {
+            console.log("usuario logueado");
+            dispatchType = 'RESTORE_TOKEN';
+          }
+        } catch (e) {
+          console.log("error atrapado", e)
+          // Restoring token failed
+          dispatchType = 'SIGN_OUT';
         }
-      } catch (e) {
-        console.log("error atrapado", e)
-        // Restoring token failed
-        dispatchType = 'SIGN_OUT';
-      }
-      // After restoring token, we may need to validate it in production apps
+        // After restoring token, we may need to validate it in production apps
 
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      dispatch({ type: dispatchType, token: JSON.parse(userToken) });
-    };
+        // This will switch to the App screen or Auth screen and this loading
+        // screen will be unmounted and thrown away.
+        dispatch({ type: dispatchType, token: JSON.parse(userToken) });
+      };
 
-    bootstrapAsync();
-  }, []);
+      bootstrapAsync();
+    }, [])
 
   const authContext = React.useMemo(
+
     () => ({
+
       signIn: async (data) => {
         let token = null;
+        console.log("auth context useMemo> ");
         dispatch({ type: 'SIGNING', token: token });
         if (!data.username || !data.password) {
           alert("Ingrese sus datos");
@@ -89,7 +89,7 @@ function App() {
         // In the example, we'll use a dummy token
 
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-      },
+      }
     }),
     []
   );
@@ -100,12 +100,12 @@ function App() {
 
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider value={{ authContext, token: state.userToken }}>
       <NavigationContainer>
         {state.userToken == null ? (
           <LoginStack />
         ) : (
-          <AppDrawer token={state.userToken}/>
+          <AppDrawer token={state.userToken} />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
